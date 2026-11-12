@@ -1,0 +1,328 @@
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(const BmwArabicApp());
+}
+
+class BmwArabicApp extends StatelessWidget {
+  const BmwArabicApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'دليل تشخيص BMW الاحترافي',
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        brightness: Brightness.dark,
+        scaffoldBackgroundColor: const Color(0xFF0F1115),
+        colorScheme: ColorScheme.dark(
+          primary: const Color(0xFF0066B3),
+          secondary: const Color(0xFFE31B23),
+          surface: const Color(0xFF1A1D24),
+        ),
+      ),
+      // ضبط الاتجاه ليكون من اليمين ليسار (Arabic Support)
+      builder: (context, child) {
+        return Directionality(
+          textDirection: TextDirection.rtl,
+          child: child!,
+        );
+      },
+      home: const BmwHomeArabicScreen(),
+    );
+  }
+}
+
+class BmwDiagnosticItem {
+  final String seriesAr;    // اسم الفئة بالعربي
+  final String chassis;     // الشاسيه
+  final String engineCode;  // المحرك
+  final String obdCode;     // كود العطل
+  final String symptomAr;   // العرض بالعربي
+  final String causesAr;    // الأسباب بالعربي
+  final String partNameAr;  // اسم القطعة بالعربي
+  final String oemNumber;   // رقم القطعة
+  final String checkStepsAr;// خطوات الفحص
+
+  BmwDiagnosticItem({
+    required this.seriesAr,
+    required this.chassis,
+    required this.engineCode,
+    required this.obdCode,
+    required this.symptomAr,
+    required this.causesAr,
+    required this.partNameAr,
+    required this.oemNumber,
+    required this.checkStepsAr,
+  });
+}
+
+class BmwHomeArabicScreen extends StatefulWidget {
+  const BmwHomeArabicScreen({super.key});
+
+  @override
+  State<BmwHomeArabicScreen> createState() => _BmwHomeArabicScreenState();
+}
+
+class _BmwHomeArabicScreenState extends State<BmwHomeArabicScreen> {
+  String selectedFilter = 'الكل';
+  String searchQuery = '';
+
+  // قاعدة البيانات موثقة بالكامل باللغة العربية وسهلة البحث
+  final List<BmwDiagnosticItem> database = [
+    BmwDiagnosticItem(
+      seriesAr: 'الفئة الثالثة',
+      chassis: 'F30',
+      engineCode: 'N20B20',
+      obdCode: 'P0299',
+      symptomAr: 'ضعف عام في التسارع مع صوت تنفيس هواء عند الضغط على البنزين وخمول في التيربو.',
+      causesAr: 'قطع في غشاء بلف التيربو أو تسريب ضغط في خراطيم الانتركولر.',
+      partNameAr: 'صمام تحويل التيربو (Diverter Valve)',
+      oemNumber: '11657601058',
+      checkStepsAr: '1. فحص بلف التيربو الميكانيكي.\n2. اختبار كبس خراطيم الانتركولر بدخان الضغط.',
+    ),
+    BmwDiagnosticItem(
+      seriesAr: 'الفئة الثالثة',
+      chassis: 'E46',
+      engineCode: 'M54',
+      obdCode: 'P0171',
+      symptomAr: 'إضاءة لمبة الماكينة، زيادة استهلاك الوقود، وضعف في عزم المحرك.',
+      causesAr: 'تشقق في خرطوم سحب الهواء الرئيسي أو تلف بلف تبخير الزيت (PCV).',
+      partNameAr: 'خرطوم سحب الهواء / بلف تبخير الزيت',
+      oemNumber: '13541438759',
+      checkStepsAr: '1. فحص خراطيم الفاكيوم المرنة للبحث عن شقوق.\n2. إجراء اختبار الدخان.',
+    ),
+    BmwDiagnosticItem(
+      seriesAr: 'الفئة الثالثة',
+      chassis: 'E90',
+      engineCode: 'N46 / N52',
+      obdCode: 'P0012',
+      symptomAr: 'تأخير في إدارة السيارة صباحاً، صوت طقطقة خفيفة، وتذبذب في الـ RPM.',
+      causesAr: 'تآكل أو انسداد في بلف التحكم بالزيت (فانوس).',
+      partNameAr: 'بلف التحكم بالزيت (Vanos Solenoid)',
+      oemNumber: '11367585425',
+      checkStepsAr: '1. فك وتنظيف بلفي الفانوس بمنظف إلكترونيات.\n2. تبديل الحساسات للتأكد.',
+    ),
+    BmwDiagnosticItem(
+      seriesAr: 'الفئة الخامسة',
+      chassis: 'E60',
+      engineCode: 'N52',
+      obdCode: 'P0597',
+      symptomAr: 'ارتفاع تدريجي في حرارة المحرك وتشغيل مروحة التبريد على السرعة القصوى.',
+      causesAr: 'تلف منظم الحرارة (البلف) أو تسريب في طلمبة المياه الكهربائية.',
+      partNameAr: 'بوابة حرارة المحرك (Thermostat)',
+      oemNumber: '11537549476',
+      checkStepsAr: '1. فحص دورة التبريد بالكمبيوتر.\n2. التأكد من عمل طلمبة المياه.',
+    ),
+    BmwDiagnosticItem(
+      seriesAr: 'الفئة الخامسة',
+      chassis: 'F10',
+      engineCode: 'N20 / N55',
+      obdCode: 'P0087',
+      symptomAr: 'توقف مفاجئ للمحرك أثناء القيادة أو دخول السيارة في وضع الطوارئ.',
+      causesAr: 'انخفاض ضغط الوقود بسبب تلف طلمبة البنزين العالية الضغط (HPFP).',
+      partNameAr: 'طلمبة بنزين ضغط عالي (HPFP)',
+      oemNumber: '13518604229',
+      checkStepsAr: '1. قياس ضغط البنزين الفعلي بالمنظومة بالكمبيوتر.',
+    ),
+    BmwDiagnosticItem(
+      seriesAr: 'فئة الـ X (دفع رباعي)',
+      chassis: 'E70 / X5',
+      engineCode: 'N55',
+      obdCode: 'C1109',
+      symptomAr: 'إضاءة لمبات تحذير نظام الثبات وثقل في حركة الدركسيون.',
+      causesAr: 'تلف ترس موتور علبة التوزيع الأمامية (تروس بلاستيكية تالفة).',
+      partNameAr: 'ترس موتور دفرنس الدفع الرباعي',
+      oemNumber: '27107566296',
+      checkStepsAr: '1. ففك موتور العلبة وتغيير الترس الداخلي التالف.',
+    ),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    // محرك بحث ذكي يبحث في كل النصوص العربية (الأعراض، القطع، الأسباب، الشاسيه)
+    final filteredList = database.where((item) {
+      final query = searchQuery.trim().toLowerCase();
+      final matchesFilter = selectedFilter == 'الكل' || item.seriesAr.contains(selectedFilter);
+      
+      final matchesSearch = query.isEmpty ||
+          item.symptomAr.toLowerCase().contains(query) ||
+          item.partNameAr.toLowerCase().contains(query) ||
+          item.causesAr.toLowerCase().contains(query) ||
+          item.chassis.toLowerCase().contains(query) ||
+          item.obdCode.toLowerCase().contains(query);
+
+      return matchesFilter && matchesSearch;
+    }).toList();
+
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('دليل تشخيص أعطال BMW بالعربي', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+        backgroundColor: const Color(0xFF1A1D24),
+        centerTitle: true,
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // شريط البحث المريح باللغة العربية
+            TextField(
+              onChanged: (val) => setState(() => searchQuery = val),
+              decoration: InputDecoration(
+                hintText: 'ابحث بالعربي: (مثال: ضعف تسارع، تفتفة، طلمبة، بلف، F30)...',
+                hintStyle: const TextStyle(fontSize: 13, color: Colors.grey),
+                prefixIcon: const Icon(Icons.search, color: Color(0xFF0066B3)),
+                filled: true,
+                fillColor: const Color(0xFF1A1D24),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(14),
+                  borderSide: BorderSide.none,
+                ),
+              ),
+            ),
+            const SizedBox(height: 14),
+
+            // فلاتر الفئات بالعربي
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: ['الكل', 'الفئة الثالثة', 'الفئة الخامسة', 'فئة الـ X (دفع رباعي)'].map((filter) {
+                  final isSelected = selectedFilter == filter;
+                  return Padding(
+                    padding: const EdgeInsets.only(left: 8.0),
+                    child: ChoiceChip(
+                      label: Text(filter),
+                      selected: isSelected,
+                      selectedColor: const Color(0xFF0066B3),
+                      backgroundColor: const Color(0xFF1A1D24),
+                      labelStyle: TextStyle(
+                        color: isSelected ? Colors.white : Colors.grey,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      onSelected: (selected) {
+                        setState(() => selectedFilter = filter);
+                      },
+                    ),
+                  );
+                }).toList(),
+              ),
+            ),
+            const SizedBox(height: 16),
+
+            Text(
+              'النتائج المتاحة (${filteredList.length}):',
+              style: const TextStyle(color: Colors.grey, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 10),
+
+            // قائمة عرض الأعطال
+            Expanded(
+              child: filteredList.isEmpty
+                  .?(const Center(
+                      child: Text('عذراً، لا توجد نتائج مطابقة لبحثك. جرب كلمة أخرى.', style: TextStyle(color: Colors.grey)),
+                    ))
+                  : ListView.builder(
+                      itemCount: filteredList.length,
+                      itemBuilder: (context, index) {
+                        final item = filteredList[index];
+                        return Card(
+                          color: const Color(0xFF1A1D24),
+                          margin: const EdgeInsets.only(bottom: 14),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16),
+                            side: BorderSide(color: Colors.white.withOpacity(0.05)),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.between,
+                                  children: [
+                                    Container(
+                                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                                      decoration: BoxDecoration(
+                                        color: const Color(0xFFE31B23).withOpacity(0.2),
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                      child: Text(
+                                        'كود العطل: ${item.obdCode}',
+                                        style: const TextStyle(
+                                          color: Color(0xFFE31B23),
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 13,
+                                        ),
+                                      ),
+                                    ),
+                                    Chip(
+                                      label: Text('${item.seriesAr} - ${item.chassis}'),
+                                      backgroundColor: const Color(0xFF0066B3).withOpacity(0.2),
+                                      labelStyle: const TextStyle(fontSize: 11, color: Colors.blueAccent),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 12),
+                                const Text(
+                                  'العرض أو المشكلة:',
+                                  style: TextStyle(color: Colors.grey, fontSize: 12),
+                                ),
+                                const SizedBox(height: 2),
+                                Text(
+                                  item.symptomAr,
+                                  style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold, height: 1.3),
+                                ),
+                                const SizedBox(height: 10),
+                                Container(
+                                  padding: const EdgeInsets.all(12),
+                                  decoration: BoxDecoration(
+                                    color: Colors.black38,
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          const Icon(Icons.build, size: 16, color: Colors.amber),
+                                          const SizedBox(width: 6),
+                                          Expanded(
+                                            child: Text(
+                                              'القطعة المسؤولة: ${item.partNameAr}',
+                                              style: const TextStyle(color: خانة الألوان أو النص: Colors.amber, fontWeight: FontWeight.bold, fontSize: 14),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      const SizedBox(height: 4),
+                                      Text(
+                                        'رقم القطعة الأصلي (OEM): ${item.oemNumber}',
+                                        style: const TextStyle(color: Colors.grey, fontSize: 12),
+                                      ),
+                                      const SizedBox(height: 6),
+                                      Text(
+                                        'السبب المحتمل: ${item.causesAr}',
+                                        style: const TextStyle(color: Colors.white70, fontSize: 13),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                const SizedBox(height: 10),
+                                Text(
+                               -   'خطوات الفحص العملي:\n${item.checkStepsAr}',
+                                  style: const TextStyle(color: Colors.lightBlueAccent, height: 1.4, fontSize: 13),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
